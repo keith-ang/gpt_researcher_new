@@ -1,4 +1,8 @@
+'use client'
 import Image from "next/image";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+
 
 interface HeaderProps {
   loading?: boolean;      // Indicates if research is currently in progress
@@ -9,10 +13,29 @@ interface HeaderProps {
 }
 
 const Header = ({ loading, isStopped, showResult, onStop, onNewResearch }: HeaderProps) => {
+
+  const { data: session } = useSession();
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       {/* Original gradient background with blur effect */}
       <div className="absolute inset-0 backdrop-blur-sm bg-gradient-to-b to-transparent"></div>
+      
+       {/* Logout button at top right, rendered only if session exists */}
+       {session && (
+        <div className="absolute top-4 right-4">
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-sm text-white bg-gray-800 rounded hover:bg-gray-700 transition-all duration-200 shadow"
+          >
+            Logout
+          </button>
+        </div>
+      )}
       
       {/* Header container */}
       <div className="container relative h-[60px] px-4 lg:h-[80px] lg:px-0 pt-4 pb-4">

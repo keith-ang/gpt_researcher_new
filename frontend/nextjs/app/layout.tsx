@@ -3,6 +3,7 @@ import { Lexend } from "next/font/google";
 import PlausibleProvider from "next-plausible";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import "./globals.css";
+import { SessionProvider } from 'next-auth/react';
 
 const inter = Lexend({ subsets: ["latin"] });
 
@@ -53,7 +54,9 @@ export default function RootLayout({
         className={`${inter.className} flex min-h-screen flex-col justify-between`}
         suppressHydrationWarning
       >
-        {children}
+        <SessionProvider> 
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
