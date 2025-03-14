@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ResearchHistoryItem } from '../types/data';
+import { IResearchHistoryItem } from '@/lib/db/models/research.model';
 import { formatDistanceToNow } from 'date-fns';
 
 interface ResearchSidebarProps {
-  history: ResearchHistoryItem[];
+  history: IResearchHistoryItem[];
   onSelectResearch: (id: string) => void;
   onNewResearch: () => void;
   onDeleteResearch: (id: string) => void;
@@ -117,26 +117,26 @@ const ResearchSidebar: React.FC<ResearchSidebarProps> = ({
                   <ul className="space-y-2">
                     {history.map((item) => (
                       <li 
-                        key={item.id}
+                        key={item._id}
                         className="relative rounded-md hover:bg-gray-800 transition-colors duration-200 shadow-sm hover:shadow border-l-2 border-gray-700 hover:border-purple-500 pl-0.5"
-                        onMouseEnter={() => setHoveredItem(item.id)}
+                        onMouseEnter={() => setHoveredItem(item._id)}
                         onMouseLeave={() => setHoveredItem(null)}
                       >
                         <button
-                          onClick={() => onSelectResearch(item.id)}
+                          onClick={() => onSelectResearch(item._id)}
                           className="w-full text-left p-3 pr-8"
                         >
                           <h3 className="font-medium truncate text-gray-200">{item.question}</h3>
                           <p className="text-xs text-gray-400 mt-1">
-                            {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
+                            {new Date(item.createdAt).toLocaleTimeString()}
                           </p>
                         </button>
                         
-                        {hoveredItem === item.id && (
+                        {hoveredItem === item._id && (
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              onDeleteResearch(item.id);
+                              onDeleteResearch(item._id);
                             }}
                             className="absolute right-2 top-3 text-gray-400 hover:text-red-500 transition-colors duration-200"
                             aria-label="Delete research"

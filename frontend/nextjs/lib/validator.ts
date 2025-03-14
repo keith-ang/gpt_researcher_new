@@ -51,3 +51,21 @@ export const UserSignUpSchema = UserSignInSchema.extend({
 export const UserNameSchema = z.object({
     name: UserName,
 })
+
+
+
+// RESEARCH HISTORY
+
+
+// Define schemas for each type of Data
+
+const Question = z.string();
+const Answer = z.string();
+const OrderedData = z.array(z.any()).default([]);
+
+export const ResearchHistoryItemSchema = z.object({
+    question: Question,
+    answer: Answer,
+    orderedData: OrderedData,
+});
+

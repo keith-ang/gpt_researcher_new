@@ -42,10 +42,10 @@ export interface Domain {
   value: string;
 }
 
-export interface ResearchHistoryItem {
-  id: string;
-  question: string;
-  answer: string;
-  timestamp: number;
-  orderedData: Data[];
-} 
+// export interface ResearchHistoryItem {
+//   id: string;
+//   question: string;
+//   answer: string;
+//   timestamp: number;
+//   orderedData: Data[];
+// } 

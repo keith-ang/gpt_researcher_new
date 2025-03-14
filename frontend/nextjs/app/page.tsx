@@ -39,12 +39,18 @@ export default function Home() {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Add a flag to track if research is loaded from history
+  const [loadedFromHistory, setLoadedFromHistory] = useState(false);
+  // Use a ref to track if we've saved research to avoid multiple saves
+  const hasSavedRef = useRef(false);
+
 
   const { 
     history, 
     saveResearch, 
     getResearchById, 
-    deleteResearch 
+    deleteResearch,
+    clearHistory
   } = useResearchHistory();
 
   const { socket, initializeWebSocket } = useWebSocket(
@@ -131,6 +137,8 @@ export default function Home() {
       socket.close();
     }
     setLoading(false);
+    setLoadedFromHistory(false);
+    hasSavedRef.current = false;
   };
 
   const handleClickSuggestion = (value: string) => {
@@ -167,24 +175,39 @@ export default function Home() {
     setSidebarOpen(false);
   };
 
-  // Save completed research to history
+  // When research completes, save it to the database.
   useEffect(() => {
-    // Only save when research is complete and not loading
-    if (showResult && !loading && answer && question && orderedData.length > 0) {
-      // Check if this is a new research (not loaded from history)
-      const isNewResearch = !history.some(item => 
-        item.question === question && item.answer === answer
-      );
-      
-      if (isNewResearch) {
-        saveResearch(question, answer, orderedData);
-      }
+    if (
+      showResult &&
+      !loading &&
+      answer &&
+      question &&
+      orderedData.length > 0 &&
+      !loadedFromHistory &&
+      !hasSavedRef.current
+    ) {
+      hasSavedRef.current = true;
+      (async () => {
+        const id = await saveResearch(question, answer, orderedData);
+        if (id) {
+          console.log("Research saved with id", id);
+        }
+      })();
     }
-  }, [showResult, loading, answer, question, orderedData, history, saveResearch]);
+  }, [
+    showResult,
+    loading,
+    answer,
+    question,
+    orderedData,
+    loadedFromHistory,
+    saveResearch,
+  ]);
+
 
   // Handle selecting a research from history
-  const handleSelectResearch = (id: string) => {
-    const research = getResearchById(id);
+  const handleSelectResearch = async (id: string) => {
+    const research = await getResearchById(id);
     if (research) {
       setShowResult(true);
       setQuestion(research.question);
@@ -193,6 +216,8 @@ export default function Home() {
       setOrderedData(research.orderedData);
       setLoading(false);
       setSidebarOpen(false);
+      setLoadedFromHistory(true);
+      hasSavedRef.current = true;
     }
   };
 
@@ -320,7 +345,7 @@ export default function Home() {
                 />
               </div>
 
-              {showHumanFeedback && false &&(
+              {showHumanFeedback && false && (
                 <HumanFeedback
                   questionForHuman={questionForHuman}
                   websocket={socket}
