@@ -25,6 +25,10 @@ export default function CredentialsSignInForm() {
   const router = useRouter()
   const form = useForm<IUserSignIn>({
     resolver: zodResolver(UserSignInSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
 
   const { control, handleSubmit } = form
