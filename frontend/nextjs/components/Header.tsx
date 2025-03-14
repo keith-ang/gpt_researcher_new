@@ -14,8 +14,6 @@ interface HeaderProps {
 
 const Header = ({ loading, isStopped, showResult, onStop, onNewResearch }: HeaderProps) => {
 
-  const { data: session } = useSession();
-
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/' });
   };
@@ -25,8 +23,7 @@ const Header = ({ loading, isStopped, showResult, onStop, onNewResearch }: Heade
       {/* Original gradient background with blur effect */}
       <div className="absolute inset-0 backdrop-blur-sm bg-gradient-to-b to-transparent"></div>
       
-       {/* Logout button at top right, rendered only if session exists */}
-       {session && (
+       {(
         <div className="absolute top-4 right-4">
           <button
             onClick={handleLogout}
