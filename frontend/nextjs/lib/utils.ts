@@ -6,6 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatError = (error: any): string => {
+  if (error.name === 'CustomAuthError' || error.name === 'AuthError') {
+    return error.message;
+  }
   if (error.name === 'ZodError') {
     const fieldErrors = Object.keys(error.errors).map((field) => {
       const errorMessage = error.errors[field].message

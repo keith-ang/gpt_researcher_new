@@ -6,14 +6,23 @@ import { connectToDatabase } from './lib/db'
 import client from './lib/db/client'
 import User from './lib/db/models/user.model'
 
-import NextAuth, { type DefaultSession } from 'next-auth'
+import NextAuth, { type DefaultSession, AuthError } from 'next-auth'
 import authConfig from './auth.config'
+import {z} from "zod"
 
 declare module 'next-auth' {
   interface Session {
     user: {
       role: string
     } & DefaultSession['user']
+  }
+}
+
+export class CustomAuthError extends AuthError{
+  constructor(msg: string) {
+    super();
+    this.message = msg;
+    this.stack = undefined;
   }
 }
 
@@ -41,26 +50,43 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { type: 'password' },
       },
       async authorize(credentials) {
-        await connectToDatabase()
-        if (credentials == null) return null
 
-        const user = await User.findOne({ email: credentials.email })
-
-        if (user && user.password) {
-          const isMatch = await bcrypt.compare(
-            credentials.password as string,
-            user.password
-          )
-          if (isMatch) {
-            return {
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              organisation: user.organisation,
-            }
+        try {
+          await connectToDatabase()
+          if (credentials == null) return null
+  
+          const user = await User.findOne({ email: credentials.email })
+  
+          // Handle user not found
+          if (!user) throw new CustomAuthError("Email not found");
+  
+          // Handle if user has no password (social login only user)
+          if (!user.password) throw new CustomAuthError("Try another login method");
+          
+          // Compare passwords
+          const isMatch = await bcrypt.compare(credentials.password as string, user.password);
+          
+          // Handle password mismatch
+          if (!isMatch) throw new CustomAuthError("Invalid password");
+  
+          return {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            organisation: user.organisation,
+          };
+        
+        } catch(error: any) {
+          if (error instanceof z.ZodError) {
+            throw new CustomAuthError("Invalid credentials");
           }
+          
+          // Pass through custom errors or create a generic one
+          throw new CustomAuthError(error.message || "Authentication failed");
         }
-        return null
+         
+        
+
       },
     }),
   ],
