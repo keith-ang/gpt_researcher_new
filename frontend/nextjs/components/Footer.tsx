@@ -16,31 +16,34 @@ const Footer: React.FC<FooterProps> = ({ chatBoxSettings, setChatBoxSettings }) 
       <div className="container flex min-h-[72px] mt-2 items-center justify-between border-t border-[#D2D2D2] px-4 pb-3 pt-5 lg:min-h-[72px] lg:px-0 lg:py-5">
         <Modal setChatBoxSettings={setChatBoxSettings} chatBoxSettings={chatBoxSettings} />
         <div className="text-sm text-gray-100">
-            © {new Date().getFullYear()} GPT Researcher. All rights reserved.
+            © {new Date().getFullYear()} Quest Language. All rights reserved.
         </div>
         <div className="flex items-center gap-3">
-          <Link href={"https://github.com/assafelovic/gpt-researcher"} target="_blank">
+          <Link href={"https://www.facebook.com/questlanguage/"} target="_blank">
             <Image
-              src={"/img/github.svg"}
-              alt="github"
+              src={"/img/facebook.svg"}
+              alt="facebook"
               width={30}
               height={30}
+              style={{ filter: 'brightness(0) invert(1)' }}
             />{" "}
           </Link>
-          <Link href={"https://discord.gg/QgZXvJAccX"} target="_blank">
+          <Link href={"https://www.instagram.com/questlanguage/?hl=en"} target="_blank">
               <Image
-                src={"/img/discord.svg"}
-                alt="discord"
+                src={"/img/instagram.svg"}
+                alt="instagram"
                 width={30}
                 height={30}
+                style={{ filter: 'brightness(0) invert(1)' }}
               />{" "}
           </Link>
-          <Link href={"https://hub.docker.com/r/gptresearcher/gpt-researcher"} target="_blank">
+          <Link href={"https://www.linkedin.com/company/questlanguage/"} target="_blank">
               <Image
-                src={"/img/docker.svg"}
-                alt="docker"
+                src={"/img/linkedin.svg"}
+                alt="linkedin"
                 width={30}
                 height={30}
+                style={{ filter: 'brightness(0) invert(1)' }}
               />{" "}
           </Link>
         </div>

@@ -7,19 +7,19 @@ import { SessionProvider } from 'next-auth/react';
 
 const inter = Lexend({ subsets: ["latin"] });
 
-let title = "GPT Researcher";
+let title = "Quest Research";
 let description =
   "LLM based autonomous agent that conducts local and web research on any topic and generates a comprehensive report with citations.";
-let url = "https://github.com/assafelovic/gpt-researcher";
-let ogimage = "/favicon.ico";
-let sitename = "GPT Researcher";
+let url = "https://sea.quest.ac";
+let ogimage = "/quest-logo.png";
+let sitename = "Quest Research";
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
   title,
   description,
   icons: {
-    icon: "/favicon.ico",
+    icon: "/quest-logo.png",
   },
   openGraph: {
     images: [ogimage],

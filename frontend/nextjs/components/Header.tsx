@@ -38,9 +38,9 @@ const Header = ({ loading, isStopped, showResult, onStop, onNewResearch }: Heade
       <div className="container relative h-[60px] px-4 lg:h-[80px] lg:px-0 pt-4 pb-4">
         <div className="flex flex-col items-center">
           {/* Logo/Home link */}
-          <a href="/">
+          <a href="https://questlanguage.com/">
             <Image
-              src="/img/gptr-logo.png"
+              src="/quest-logo.png"
               alt="logo"
               width={60}
               height={60}
