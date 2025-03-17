@@ -128,7 +128,7 @@ const ResearchSidebar: React.FC<ResearchSidebarProps> = ({
                         >
                           <h3 className="font-medium truncate text-gray-200">{item.question}</h3>
                           <p className="text-xs text-gray-400 mt-1">
-                            {new Date(item.createdAt).toLocaleTimeString()}
+                            {new Date(item.createdAt).toLocaleString()}
                           </p>
                         </button>
                         
