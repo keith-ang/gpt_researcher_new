@@ -98,9 +98,9 @@ def startup_event():
 # Routes
 
 
-@app.get("/")
-async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "report": None})
+# @app.get("/")
+# async def read_root(request: Request):
+#     return templates.TemplateResponse("index.html", {"request": request, "report": None})
 
 
 @app.get("/files/")
