@@ -1,7 +1,10 @@
 import importlib
+import subprocess
+import sys
 from typing import Any
 from colorama import Fore, Style, init
 import os
+from enum import Enum
 
 _SUPPORTED_PROVIDERS = {
     "openai",
@@ -21,11 +24,33 @@ _SUPPORTED_PROVIDERS = {
     "xai",
     "deepseek",
     "litellm",
+    "gigachat",
+    "openrouter",
     #add deployment name
     "gpt-4o",
-    "gigachat"
+    "gigachat",
 }
 
+NO_SUPPORT_TEMPERATURE_MODELS = [
+    "deepseek/deepseek-reasoner",
+    "o1-mini",
+    "o1-mini-2024-09-12",
+    "o1",
+    "o1-2024-12-17",
+    "o3-mini",
+    "o3-mini-2025-01-31",
+    "o1-preview"
+]
+
+SUPPORT_REASONING_EFFORT_MODELS = [
+    "o3-mini",
+    "o3-mini-2025-01-31"
+]
+
+class ReasoningEfforts(Enum):
+    High = "high"
+    Medium = "medium"
+    Low = "low"
 
 class GenericLLMProvider:
 
@@ -134,6 +159,31 @@ class GenericLLMProvider:
             from langchain_community.chat_models.litellm import ChatLiteLLM
 
             llm = ChatLiteLLM(**kwargs)
+        elif provider == "gigachat":
+            _check_pkg("langchain_gigachat")
+            from langchain_gigachat.chat_models import GigaChat
+
+            kwargs.pop("model", None) # Use env GIGACHAT_MODEL=GigaChat-Max
+            llm = GigaChat(**kwargs)
+        elif provider == "openrouter":
+            _check_pkg("langchain_openai")
+            from langchain_openai import ChatOpenAI
+            from langchain_core.rate_limiters import InMemoryRateLimiter
+
+            rps = float(os.environ["OPENROUTER_LIMIT_RPS"]) if "OPENROUTER_LIMIT_RPS" in os.environ else 1.0
+            
+            rate_limiter = InMemoryRateLimiter(
+                requests_per_second=rps,
+                check_every_n_seconds=0.1,
+                max_bucket_size=10,
+            )
+
+            llm = ChatOpenAI(openai_api_base='https://openrouter.ai/api/v1',
+                     openai_api_key=os.environ["OPENROUTER_API_KEY"],
+                     rate_limiter=rate_limiter,
+                     **kwargs
+                )
+        
         
         #add for new deployment
         elif provider == "gpt-4o": # REPLACE deployment_name with your deployment name
