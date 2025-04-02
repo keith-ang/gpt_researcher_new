@@ -54,13 +54,14 @@ export const useWebSocket = (
         console.log('chatBoxSettings', chatBoxSettings);
         const domainFilters = JSON.parse(localStorage.getItem('domainFilters') || '[]');
         const domains = domainFilters ? domainFilters.map((domain: any) => domain.value) : [];
-        const { report_type, report_source, tone } = chatBoxSettings;
+        const { report_type, report_source, tone, language } = chatBoxSettings;
         let data = "start " + JSON.stringify({ 
           task: promptValue,
           report_type, 
           report_source, 
           tone,
-          query_domains: domains
+          query_domains: domains,
+          language: language,
         });
         newSocket.send(data);
         startHeartbeat(newSocket);

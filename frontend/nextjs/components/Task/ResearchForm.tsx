@@ -11,7 +11,8 @@ interface ResearchFormProps {
     task: string,
     reportType: string,
     reportSource: string,
-    domains: Domain[]
+    domains: Domain[],
+    language: string,
   ) => void;
 }
 
@@ -19,13 +20,17 @@ export default function ResearchForm({
   chatBoxSettings,
   setChatBoxSettings,
   onFormSubmit,
-}: ResearchFormProps) {
+}: ResearchFormProps) {  
+  // Destructure necessary fields from chatBoxSettings
+  let { report_type, report_source, tone, language } = chatBoxSettings;
+
   const { trackResearchQuery } = useAnalytics();
   const [task, setTask] = useState("");
   const [newDomain, setNewDomain] = useState('');
-
-  // Destructure necessary fields from chatBoxSettings
-  let { report_type, report_source, tone } = chatBoxSettings;
+  const [reportLanguage, setReportLanguage] = useState(() => {
+    // Initialize with the value from chatBoxSettings if available
+    return language || "";
+  });
 
   const [domains, setDomains] = useState<Domain[]>(() => {
     if (typeof window !== 'undefined') {
@@ -42,6 +47,13 @@ export default function ResearchForm({
       domains: domains.map(domain => domain.value)
     }));
   }, [domains, setChatBoxSettings]);
+
+  useEffect(() => {
+    setChatBoxSettings(prev => ({
+      ...prev,
+      language: reportLanguage
+    }));
+  }, [reportLanguage, setChatBoxSettings]);
 
   const handleAddDomain = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,15 +83,23 @@ export default function ResearchForm({
     }));
   };
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReportLanguage(e.target.value);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onFormSubmit) {
+      const finalLanguage = reportLanguage || "English";
+
       const updatedSettings = {
         ...chatBoxSettings,
-        domains: domains.map(domain => domain.value)
+        domains: domains.map(domain => domain.value),
+        language: finalLanguage
+
       };
       setChatBoxSettings(updatedSettings);
-      onFormSubmit(task, report_type, report_source, domains);
+      onFormSubmit(task, report_type, report_source, domains, finalLanguage);
     }
   };
 
@@ -128,6 +148,11 @@ export default function ResearchForm({
         </select>
       </div>
 
+      <div className="form-group">
+                <label htmlFor="reportLanguage" className="agent_question">Report Language (Optional)</label>
+                <input type="text" className="input-static" id="reportLanguage" name="reportLanguage"  value={reportLanguage}
+          onChange={handleLanguageChange} placeholder="Default: English"/>
+      </div>
       
 
       {report_source === "local" || report_source === "hybrid" ? (

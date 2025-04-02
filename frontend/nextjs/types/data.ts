@@ -36,6 +36,7 @@ export interface ChatBoxSettings {
   tone: string;
   domains: string[];
   defaultReportType: string;
+  language: string;
 }
 
 export interface Domain {
