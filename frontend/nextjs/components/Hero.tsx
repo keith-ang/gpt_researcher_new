@@ -134,50 +134,19 @@ const Hero: FC<THeroProps> = ({
               Hours of Research
             </span>
           </motion.h1>
-          <motion.h2 
-            className="text-base sm:text-xl font-light text-center px-4 mb-6 text-gray-300 max-w-2xl"
-            variants={fadeInUp}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            Say Hello to GPT Researcher, your AI partner for instant insights and comprehensive research
-          </motion.h2>
-          
-          {/* Powered by badge */}
-          {/*<motion.div
-            variants={fadeInUp}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex items-center justify-center gap-2 py-2 px-4 rounded-full bg-black/30 backdrop-blur-sm border border-teal-500/20 hover:border-teal-500/40 transition-all duration-300 shadow-sm hover:shadow-teal-900/20"
-          >
-            <div className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse mr-0.5"></div>
-            <span className="text-gray-400 text-sm font-medium">Powered by</span>
-            <a 
-              href="https://gptr.dev" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-white text-[15px] font-bold hover:underline"
-            >
-              GPT Researcher
-            </a>
-          </motion.div>*/}
+          <h2 className="text-xl font-light text-center px-4 mb-10 md:mb-12 text-gray-300">
+            Say Hello to GPT Researcher, your AI mate for rapid insights and comprehensive research
+          </h2>
         </motion.div>
 
-        {/* Input section with enhanced styling */}
-        <motion.div 
-          variants={fadeInUp}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="w-full max-w-[760px] pb-6 sm:pb-8 md:pb-10 px-4 mt-4"
-        >
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-600 via-cyan-500 to-blue-600 rounded-lg blur-md opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-x"></div>
-            <div className="relative bg-black bg-opacity-20 backdrop-blur-sm rounded-lg ring-1 ring-gray-800/60">
-              <InputArea
-                promptValue={promptValue}
-                setPromptValue={setPromptValue}
-                handleSubmit={handleDisplayResult}
-              />
-            </div>
-          </div>
-        </motion.div>
+        {/* Input section */}
+        <div className="w-full max-w-[708px] pb-8 md:pb-10 px-4">
+          <InputArea
+            promptValue={promptValue}
+            setPromptValue={setPromptValue}
+            handleSubmit={handleDisplayResult}
+          />
+        </div>
 
         {/* Suggestions section */}
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 pb-8 md:pb-10 px-4 lg:flex-nowrap lg:justify-normal">
@@ -199,111 +168,8 @@ const Hero: FC<THeroProps> = ({
               </span>
             </div>
           ))}
-        {/* Suggestions section with enhanced styling */}
-        <motion.div 
-          variants={fadeInUp}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="flex flex-wrap items-center justify-center gap-2 xs:gap-3 md:gap-4 pb-6 sm:pb-8 md:pb-10 px-4 lg:flex-nowrap lg:justify-normal"
-        >
-          <AnimatePresence>
-            {suggestions.map((item, index) => (
-              <motion.div
-                key={item.id}
-                variants={fadeInUp}
-                initial="hidden"
-                animate="visible"
-                transition={{ duration: 0.4, delay: 1 + (index * 0.1) }}
-                className="flex h-[38px] sm:h-[42px] cursor-pointer items-center justify-center gap-[6px] rounded-lg 
-                         border border-solid border-teal-500/30 bg-gradient-to-r from-teal-900/30 to-cyan-900/30 
-                         backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-2 hover:border-teal-500/60 hover:from-teal-900/40 
-                         hover:to-cyan-900/40 transition-all duration-300 hover:shadow-lg hover:shadow-teal-900/20 min-w-[100px]"
-                onClick={() => handleClickSuggestion(item?.name)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <img
-                  src={item.icon}
-                  alt={item.name}
-                  width={18}
-                  height={18}
-                  className="w-[18px] sm:w-[20px] opacity-80 filter invert brightness-100"
-                />
-                <span className="text-xs sm:text-sm font-medium leading-[normal] text-gray-200">
-                  {item.name}
-                </span>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-      </motion.div>
-
-      {/* Magical premium gradient glow at the bottom */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showGradient ? 1 : 0 }}
-        transition={{ duration: 1.2 }}
-        className="fixed bottom-0 left-0 right-0 h-[12px] z-50 overflow-hidden pointer-events-none"
-      >
-        <div className="relative w-full h-full">
-          {/* Main perfect center glow with smooth fade at edges */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              opacity: 0.85,
-              background: 'radial-gradient(ellipse at center, rgba(12, 219, 182, 1) 0%, rgba(6, 219, 238, 0.7) 25%, rgba(6, 219, 238, 0.2) 50%, rgba(0, 0, 0, 0) 75%)',
-              boxShadow: '0 0 30px 6px rgba(12, 219, 182, 0.5), 0 0 60px 10px rgba(6, 219, 238, 0.25)'
-            }}
-          />
-          
-          {/* Subtle shimmer overlay with perfect center focus */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              animation: 'shimmer 8s ease-in-out infinite alternate',
-              opacity: 0.5,
-              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 30%, rgba(255, 255, 255, 0) 60%)'
-            }}
-          />
-          
-          {/* Gentle breathing effect */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              opacity: 0.4,
-              animation: 'breathe 7s cubic-bezier(0.4, 0.0, 0.2, 1) infinite',
-              background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 50%)'
-            }}
-          />
         </div>
       </motion.div>
-      
-      {/* Custom keyframes for magical animations */}
-      <style jsx global>{`
-        @keyframes shimmer {
-          0% {
-            opacity: 0.4;
-            transform: scale(0.98);
-          }
-          50% {
-            opacity: 0.6;
-          }
-          100% {
-            opacity: 0.4;
-            transform: scale(1.02);
-          }
-        }
-        
-        @keyframes breathe {
-          0%, 100% {
-            opacity: 0.3;
-            transform: scale(0.96);
-          }
-          50% {
-            opacity: 0.5;
-            transform: scale(1.04);
-          }
-        }
-      `}</style>
     </div>
   );
 };

@@ -165,16 +165,6 @@ body::after {
     }
   }
 
-  body {
-    margin: 0px !important;
-  }
-    100% {
-      opacity: 0.3;
-      transform: scale(1);
-    }
-  }
-}
-
   /* Add these styles for the scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;

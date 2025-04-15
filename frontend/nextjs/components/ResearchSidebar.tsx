@@ -180,18 +180,18 @@ const ResearchSidebar: React.FC<ResearchSidebarProps> = ({
                     <ul className="space-y-2 sm:space-y-3">
                       {history.map((item) => (
                         <motion.li 
-                          key={item.id}
+                          key={item._id}
                           className="relative rounded-md transition-all duration-200 border-l-2 overflow-hidden group"
                           style={{
-                            borderColor: hoveredItem === item.id ? '#0cdbb6' : 'rgba(55, 65, 81, 0.5)',
-                            background: hoveredItem === item.id ? 'rgba(17, 24, 39, 0.7)' : 'rgba(17, 24, 39, 0.4)'
+                            borderColor: hoveredItem === item._id ? '#0cdbb6' : 'rgba(55, 65, 81, 0.5)',
+                            background: hoveredItem === item._id ? 'rgba(17, 24, 39, 0.7)' : 'rgba(17, 24, 39, 0.4)'
                           }}
-                          onMouseEnter={() => setHoveredItem(item.id)}
+                          onMouseEnter={() => setHoveredItem(item._id)}
                           onMouseLeave={() => setHoveredItem(null)}
                           whileHover={{ x: 3, transition: { duration: 0.2 } }}
                         >
                           <button
-                            onClick={() => onSelectResearch(item.id)}
+                            onClick={() => onSelectResearch(item._id)}
                             className="w-full text-left p-3 sm:p-4 pr-10 min-h-[56px]"
                           >
                             <h3 className="font-medium truncate text-gray-200 text-sm sm:text-base transition-colors duration-200 group-hover:text-teal-400">{item.question}</h3>
@@ -204,7 +204,7 @@ const ResearchSidebar: React.FC<ResearchSidebarProps> = ({
                           </button>
                           
                           <AnimatePresence>
-                            {hoveredItem === item.id && (
+                            {hoveredItem === item._id && (
                               <motion.button
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -212,7 +212,7 @@ const ResearchSidebar: React.FC<ResearchSidebarProps> = ({
                                 transition={{ duration: 0.15 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  onDeleteResearch(item.id);
+                                  onDeleteResearch(item._id);
                                 }}
                                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-400 transition-colors duration-300 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-800/80"
                                 aria-label="Delete research"
