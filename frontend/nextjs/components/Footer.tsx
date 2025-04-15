@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ chatBoxSettings, setChatBoxSettings }) 
 
   return (
     <>
-      <div className="container flex min-h-[72px] mt-2 items-center justify-between border-t border-[#D2D2D2] px-4 pb-3 pt-5 lg:min-h-[72px] lg:px-0 lg:py-5">
+      <div className="container flex flex-col sm:flex-row min-h-[60px] sm:min-h-[72px] mt-2 items-center justify-center sm:justify-between border-t border-gray-700/30 px-4 pb-3 pt-4 sm:py-5 lg:px-0 bg-transparent backdrop-blur-sm gap-3 sm:gap-0">
         <Modal setChatBoxSettings={setChatBoxSettings} chatBoxSettings={chatBoxSettings} />
         <div className="text-sm text-gray-100">
             © {new Date().getFullYear()} Quest Language. All rights reserved.
